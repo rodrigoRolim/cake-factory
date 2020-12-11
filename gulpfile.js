@@ -9,21 +9,23 @@ function isJavascript (file) {
   return file.extname === '.js'
 }
 
-function cleaner () {
+function cleaner (cb) {
   
-  return src('dist', { allowEmpty: true })
+  src('dist', { allowEmpty: true })
     .pipe(plumber())
     .pipe(clean())
+  cb()
 }
 
-function builder () {
+function builder (cb) {
 
-  return src(['src/**/*.js', 'src/config/*.json', 'server.js'])
+  src(['src/**/*.js', 'src/config/*.json', 'server.js'])
     .pipe(plumber())
     .pipe(gulpif(isJavascript, babel({
       presets: ['@babel/preset-env']
     })))
     .pipe(dest('build'))
+  cb()
 }
 
 exports.build = builder
