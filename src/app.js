@@ -1,4 +1,5 @@
 import express from 'express'
+import database from '../config/database'
 
 const configureExpress = () => {
 
@@ -9,4 +10,4 @@ const configureExpress = () => {
   return app
 }
 
-export default configureExpress()
+export default () => database.connect().then(configureExpress)
