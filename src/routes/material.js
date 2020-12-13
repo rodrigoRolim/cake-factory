@@ -7,4 +7,6 @@ const materialController = new MaterialController(Material)
 
 router.post('/', (req, res) => materialController.create(req, res))
 router.get('/', (req, res) => materialController.search(req, res))
+router.put('/:id/request', (req, res) => materialController.writeOff(req, res))
+
 export default router
