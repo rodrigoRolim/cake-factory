@@ -5,3 +5,4 @@ import Material from '../models/material'
 const router = express.Router()
 const materialController = new MaterialController(Material)
 
+router.post('/', (req, res) => materialController.create(req, res))
