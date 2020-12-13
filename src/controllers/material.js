@@ -5,6 +5,10 @@ class MaterialController {
   }
   search (req, res) {
     let name = req.query.name;
+    let reg  = new RegExp(name)
+    this.Material.find({ name: { $regex: reg } })
+      .then((resp) => res.send(resp))
+      .catch(err => res.status(404).send(err.message))
   }
   create (req, res) {
     const material = new this.Material(req.body)
