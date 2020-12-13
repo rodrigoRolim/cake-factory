@@ -10,26 +10,27 @@ function isJavascript (file) {
 }
 
 
-function compileServer () {
-  var stream = src('server.js')
+function compileServer (cb) {
+  
+  src('server.js')
     .pipe(plumber())
     .pipe(gulpif(isJavascript, babel({
       presets: ['@babel/preset-env']
     })))
     .pipe(dest('build'))
-  return stream
+  cb()
 }
 
-const compiler = parallel(compileServer, function () {
+const compiler = series(compileServer, function (cb) {
 
-  var stream = src(['src/**/*.js', 'src/config/*.json'])
+  src(['src/**/*.js', 'src/config/*.json'])
     .pipe(plumber())
     .pipe(gulpif(isJavascript, babel({
       presets: ['@babel/preset-env']
     })))
     .pipe(dest('build/src'))
+  cb()
 
-  return stream
 })
 function watchCompiler (cb) {
   watch(
@@ -58,7 +59,6 @@ function execute (done) {
     stream.emit('restart', 10)
   })
   done()
-  return stream
 }
 exports.build = compiler
 exports.default = series(watchCompiler, execute)
