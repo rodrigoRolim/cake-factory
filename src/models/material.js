@@ -10,21 +10,13 @@ const counterSchema = new mongoose.Schema({
     default: 0
   }
 })
-var counter = mongoose.model('Counter', counterSchema)
-
-const writeOff = new mongoose.Schema({
-  _id: false,
-  quantity: Number,
-  user: String,
-})
+var counter = mongoose.model('CounterMaterial', counterSchema)
 
 const material = new mongoose.Schema({
   _id: Number,
   name: String,
   quantity: Number,
-  user: String,
-  writeOffs: [writeOff],
-  createdDate: { type: Date, default: Date.now }
+  user: String
 })
 
 material.pre('save', function (next) {
