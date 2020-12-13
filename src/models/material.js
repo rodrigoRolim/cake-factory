@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const counter = new mongoose.Schema({
+const counterSchema = new mongoose.Schema({
   _id: {
     type: String,
     required: true
@@ -10,9 +10,12 @@ const counter = new mongoose.Schema({
     default: 0
   }
 })
+var counter = mongoose.model('Counter', counterSchema)
+
 const writeOff = new mongoose.Schema({
+  _id: false,
   quantity: Number,
-  user: String
+  user: String,
 })
 
 const material = new mongoose.Schema({
@@ -23,7 +26,18 @@ const material = new mongoose.Schema({
   writeOffs: [writeOff],
   createdDate: { type: Date, default: Date.now }
 })
-
+material.pre('save', function (next) {
+  var doc = this
+  counter.findByIdAndUpdate({ _id: 'materialId' }, { $inc: { seq: 1 } }, { new: true, upsert: true, useFindAndModify: false })
+    .then(function (count) {
+      console.log()
+      doc._id = count.seq
+      next()
+    })
+    .catch(function (err) {
+      throw err
+    })
+})
 const Material = mongoose.model('Material', material)
 
 export default Material
