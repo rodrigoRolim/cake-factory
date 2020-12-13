@@ -10,7 +10,7 @@ class MaterialController {
     const material = new this.Material(req.body)
     return material.save()
       .then(() => res.status(201).send(material))
-      .catch(err => res.status(422))
+      .catch(err => res.status(422).send(err.message))
   }
   writeOff (req, res) {
 
