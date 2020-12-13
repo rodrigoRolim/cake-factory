@@ -26,6 +26,7 @@ const material = new mongoose.Schema({
   writeOffs: [writeOff],
   createdDate: { type: Date, default: Date.now }
 })
+
 material.pre('save', function (next) {
   var doc = this
   counter.findByIdAndUpdate({ _id: 'materialId' }, { $inc: { seq: 1 } }, { new: true, upsert: true, useFindAndModify: false })
