@@ -23,10 +23,39 @@ class MaterialController {
       .catch(err => res.status(422).send(err.message))
   }
   writeOff (req, res) {
-
+    let query = {
+      _id: req.params.id,
+      quantity: { $gt: 0 }
+    }
+    let update = {
+      "$push": { 
+        writeOffs: {
+          "quantity": req.body.quantity,
+          "user": req.body.user
+        } 
+      },
+      "$set": {
+        $inc: { quantity: -req.body.quantity }
+      }
+      
+    }
+    let options = {
+      returnNewDocument: true,
+      useFindAndModify: false,
+      upsert: true
+    }
+    return this.Material.findOneAndUpdate(query, update, options)
+      .then((uptadedStock) => {
+        console.log(uptadedStock)
+        return res.send(uptadedStock)
+      })
+      .catch(err => res.status(404).send(err.message))
   }
-  quantitySpendingByBaker (req, res) {
-
+  quantitySpendingByBaker (req, res, user) {
+    let reg = new RegExp(user)
+    return this.Material.find({ 'writeOffs.user': { $regex: reg } }, { name: 1, 'writeOffs.quantity': 1, quantity: 0, 'writeOffs.user': 1, _id: 1 })
+            .then((resp) => res.send(resp))
+            .catch(err => res.status(404).send(err.message))
   }
 }
 
