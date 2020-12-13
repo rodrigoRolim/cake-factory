@@ -1,5 +1,5 @@
 import express from 'express'
-import database from '../config/database'
+import database from './config/database'
 import routes from './routes'
 
 const configureExpress = () => {
