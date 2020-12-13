@@ -1,7 +1,7 @@
 import express from 'express'
+import materialRoutes from './material'
 const  router = express.Router()
 
-router.get('/', (req, res) => {
-  res.send('hello world')
-})
+router.use('/rawMaterials')
+
 export default router
