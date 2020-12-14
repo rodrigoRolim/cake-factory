@@ -18,4 +18,4 @@ services:
   app:
     image: alpine:3.7
     volumes: 
-      - ./:/app
+      - .:/app
