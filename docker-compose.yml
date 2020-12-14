@@ -17,4 +17,5 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
   app:
     image: alpine:3.7
-    
+    volumes: 
+      - ./:/app
