@@ -20,7 +20,7 @@ const orders = new mongoose.Schema({
   material: {
     type: mongoose.Schema.Types.Number, ref: 'Material', unique: false
   },
-  createdDate: { type: Date, default: Date.now }
+  createdDate: { type: String, default: new Date().toISOString().split('T')[0] }
 })
 
 orders.pre('save', function (next) {
