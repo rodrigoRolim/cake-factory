@@ -1,5 +1,9 @@
 version: '3.1'
 
+networks:
+  database:
+  web:
+
 services:
   mongo:
     image: mongo
@@ -7,6 +11,8 @@ services:
     environment: 
       MONGO_INITDB_ROOT_USERNAME: "${USER}"
       MONGO_INITDB_ROOT_PASSWORD:  "${PASSWORD}"
+    networks: 
+      - database
   mongo-express:
     image: mongo-express
     restart: always
@@ -15,6 +21,8 @@ services:
     environment: 
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    networks: 
+      - database
   app:
     image: my-node
     volumes: 
@@ -24,3 +32,8 @@ services:
     command: npm run dev
     ports:
       - 8080:8080
+    networks: 
+      - database
+      - web
+    depends_on: 
+      - mongo
