@@ -24,8 +24,8 @@ class MaterialController {
       .then(() => res.status(201).send({ message: "criado com sucesso"}))
       .catch(err => res.status(422).send(err.message))
   }
-  check (req, res) {
-    console.log(this.OrderController.addOrder(req, res))
+  async check (req, res) {
+
     if (await this.OrderController.addOrder(req, res)) {
       let query = {
         _id: req.params.id,
