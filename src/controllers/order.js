@@ -5,6 +5,7 @@ class OrderController {
   }
   addOrder (req, res) {
     return new Promise((resolve, reject) => {
+
       let objOrder = {
         quantity: req.body.quantity,
         user: req.body.user,
@@ -44,6 +45,7 @@ class OrderController {
       },
       {
         $project: {
+          "__v": 0,
           "material": 0,
           "materials": 0
         }
