@@ -36,12 +36,16 @@ class MaterialController {
       }
       let options = {
         returnNewDocument: true,
-        useFindAndModify: false,
-        upsert: true
+        useFindAndModify: false
       }
       return this.Material.findOneAndUpdate(query, update, options)
-        .then((resp) => res.send(resp))
-        .catch(err => res.status(404).send(err.message))
+        .then((resp) => {
+          if (!resp) {
+            return res.status(400).send({ message: "this material not exist anymore"})
+          }
+          return res.status(200).send(resp)
+        })
+        .catch(err => res.status(500).send(err.message))
     } 
     return res.status(422)
   }
