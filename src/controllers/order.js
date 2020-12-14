@@ -5,7 +5,7 @@ class OrderController {
   }
   addOrder (req, res) {
     return new Promise((resolve, reject) => {
-
+    
       let objOrder = {
         quantity: req.body.quantity,
         user: req.body.user,
@@ -13,8 +13,8 @@ class OrderController {
       }
       let order = new this.Order(objOrder)
       order.save()
-        .then(() => resolve(true))
-        .catch(() => reject(false))
+        .then(resolve(true))
+        .catch(reject(false))
     })
    
   }
