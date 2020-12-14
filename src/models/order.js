@@ -10,22 +10,23 @@ const counterSchema = new mongoose.Schema({
     default: 0
   }
 })
-var counter = mongoose.model('CounterMaterial', counterSchema)
+
+var counter = mongoose.model('CounterOrder', counterSchema)
 
 const orders = new mongoose.Schema({
+  _id: Number,
   quantity: Number,
   user: String,
   material: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'Material'
+    type: mongoose.Schema.Types.Number, ref: 'Material', unique: false
   },
   createdDate: { type: Date, default: Date.now }
 })
 
 orders.pre('save', function (next) {
   var doc = this
-  counter.findByIdAndUpdate({ _id: 'materialId' }, { $inc: { seq: 1 } }, { new: true, upsert: true, useFindAndModify: false })
+  counter.findByIdAndUpdate({ _id: 'orderId' }, { $inc: { seq: 1 } }, { new: true, upsert: true, useFindAndModify: false })
     .then(function (count) {
-      console.log()
       doc._id = count.seq
       next()
     })
@@ -34,6 +35,6 @@ orders.pre('save', function (next) {
     })
 })
 
-const Orders = mongoose.model('Order', orders)
+const Orders = mongoose.model('Orders', orders)
 
 export default Orders
