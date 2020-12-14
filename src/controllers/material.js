@@ -8,7 +8,7 @@ class MaterialController {
     let name = req.query.name;
     let user = req.query.user;
     if (name) {
-      return this.getOrderByName(name)
+      return this.getMaterialByName(name)
         .then((resp) => res.send(resp))
         .catch(err => res.send(err))
     }
@@ -21,7 +21,7 @@ class MaterialController {
   create (req, res) {
     const material = new this.Material(req.body)
     return material.save()
-      .then(() => res.status(201).send({ message: "criado com sucesso"}))
+      .then(() => res.status(201).send({ message: "created with sucess!"}))
       .catch(err => res.status(422).send(err.message))
   }
   async check (req, res) {
@@ -49,7 +49,7 @@ class MaterialController {
     } 
     return res.status(422)
   }
-  getOrderByName (name) {
+  getMaterialByName (name) {
     let reg  = new RegExp(name)
     return this.Material.find({ name: { $regex: reg } }, { name: 1, quantity: 1, user: 1, _id: 0 })
             //.then((resp) => res.send(resp))
