@@ -2,7 +2,6 @@ version: '3.1'
 
 networks:
   database:
-  web:
 
 services:
   mongo:
@@ -14,22 +13,23 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD:  root
     volumes:
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
       - ./mongo-volume:/data/db
     ports:
-      - '27017-27019:27017-27019'
+      - '27018-27019:27018-27019'
     networks: 
       - database
   app:
     image: my-node
-    volumes: 
-      - .:/app
-    working_dir: /app
-    command: npm run dev
+    environment: 
+      - MONGODB_URL=mongodb://root:root@127.0.0.1:27018/cake-factory
+    volumes:
+      - .:/app/src
+    working_dir: /app/src
+    command: sh -c "npm run build && npm start"
     ports:
-      - 8081:8081
+      - 3000:8000
     networks: 
       - database
-      - web
     depends_on: 
       - mongo
