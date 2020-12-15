@@ -13,8 +13,10 @@ services:
       MONGO_INITDB_DATABASE: cake-factory
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD:  root
-      networks: 
-        - database
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks: 
+      - database
   app:
     image: my-node
     volumes: 
